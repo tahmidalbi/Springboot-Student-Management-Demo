@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/student/dashboard">
+                <i class="bi bi-mortarboard-fill"></i> Student Dashboard
+            </a>
+            <div class="ms-auto">
+                <span class="navbar-text text-white me-3">
+                    <i class="bi bi-person-circle"></i> <span th:text="${student.name}">Student</span>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-success text-white">
+                        <h4 class="mb-0"><i class="bi bi-pencil-square"></i> Edit Profile</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <div th:if="${success}" class="alert alert-success">
+                            <i class="bi bi-check-circle"></i> <span th:text="${success}"></span>
+                        </div>
+
+                        <form th:action="@{/student/profile/update}" th:object="${student}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-123"></i> Roll Number</label>
+                                <input type="text" class="form-control" th:value="${student.rollNo}" disabled>
+                                <small class="text-danger">Roll number cannot be changed</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-person"></i> Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{name}" placeholder="Enter your name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-building"></i> Department <span class="text-danger">*</span></label>
+                                <select class="form-select" name="departmentId" required>
+                                    <option value="">Select Department</option>
+                                    <option th:each="dept : ${departments}"
+                                            th:value="${dept.id}"
+                                            th:text="${dept.name}"
+                                            th:selected="${dept.id == student.department?.id}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-book-half"></i> Enrolled Courses</label>
+                                <div class="border rounded p-3" style="max-height: 200px; overflow-y: auto;">
+                                    <div th:if="${allCourses.isEmpty()}" class="text-muted">
+                                        No courses available
+                                    </div>
+                                    <div th:if="${!allCourses.isEmpty()}">
+                                        <div th:each="course : ${allCourses}" class="form-check">
+                                            <input class="form-check-input" type="checkbox"
+                                                   th:id="'course_' + ${course.id}"
+                                                   th:value="${course.id}"
+                                                   name="courseIds"
+                                                   th:checked="${student.courses.contains(course)}">
+                                            <label class="form-check-label" th:for="'course_' + ${course.id}">
+                                                <span th:text="${course.name}">Course Name</span>
+                                                <small class="text-muted" th:text="'(' + ${course.code} + ')'"></small>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <small class="text-muted">Select/deselect courses you want to enroll in</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-lock"></i> Password <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" th:field="*{password}" placeholder="Enter new password" required>
+                                <small class="text-muted">Enter a new password or re-enter your current password</small>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="/student/dashboard" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-lg"></i> Update Profile
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

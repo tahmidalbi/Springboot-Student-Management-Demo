@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Course</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/teacher/dashboard">
+                <i class="bi bi-mortarboard-fill"></i> Teacher Dashboard
+            </a>
+            <div class="ms-auto">
+                <span class="navbar-text text-white me-3">
+                    <i class="bi bi-person-circle"></i> <span th:text="${teacher.name}">Teacher</span>
+                </span>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Add New Course</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <form th:action="@{/teacher/courses/add}" th:object="${course}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-book"></i> Course Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{name}" placeholder="e.g., Data Structures" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-hash"></i> Course Code <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{code}" placeholder="e.g., CSE201" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-building"></i> Department <span class="text-danger">*</span></label>
+                                <select class="form-select" name="departmentId" required>
+                                    <option value="">Select Department</option>
+                                    <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="/teacher/dashboard" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Cancel
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-lg"></i> Add Course
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

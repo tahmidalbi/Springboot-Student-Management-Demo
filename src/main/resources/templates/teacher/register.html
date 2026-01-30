@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row min-vh-100 align-items-center justify-content-center py-5">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <i class="bi bi-person-plus-fill fs-1"></i>
+                        <h3 class="mt-2">Teacher Registration</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div th:if="${error}" class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle"></i> <span th:text="${error}"></span>
+                        </div>
+
+                        <form th:action="@{/teacher/register}" th:object="${teacher}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-person"></i> Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" th:field="*{name}" placeholder="Enter your name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-building"></i> Department <span class="text-danger">*</span></label>
+                                <select class="form-select" name="departmentId" required>
+                                    <option value="">Select Department</option>
+                                    <option th:each="dept : ${departments}" th:value="${dept.id}" th:text="${dept.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label"><i class="bi bi-lock"></i> Password <span class="text-danger">*</span></label>
+                                <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-check-lg"></i> Register
+                            </button>
+                        </form>
+
+                        <hr class="my-4">
+
+                        <div class="text-center">
+                            <p class="mb-0">Already have an account? <a href="/login">Login here</a></p>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center text-muted">
+                        <a href="/" class="text-decoration-none">
+                            <i class="bi bi-arrow-left"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

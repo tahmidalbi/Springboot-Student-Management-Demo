@@ -46,8 +46,8 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // Using NoOp for simplicity as requested
-        return NoOpPasswordEncoder.getInstance();
+        // Using BCrypt for secure password hashing
+        return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
     }
 
     @Bean

@@ -35,6 +35,9 @@ public class TeacherController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("teacher", new Teacher());
@@ -59,6 +62,8 @@ public class TeacherController {
 
         teacher.setDepartment(dept);
         teacher.setRole("TEACHER");
+        // Encrypt password before saving
+        teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
         teacherService.save(teacher);
 
         redirectAttributes.addFlashAttribute("success", "Registration successful! Please login.");
@@ -148,6 +153,8 @@ public class TeacherController {
         Department dept = departmentService.findById(departmentId).orElse(null);
         student.setDepartment(dept);
         student.setRole("STUDENT");
+        // Encrypt password before saving
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
 
         // Add courses
         Set<Course> courses = new HashSet<>();
